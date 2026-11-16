@@ -3,9 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#f1f0ee">
+<meta name="theme-color" content="#f1e7c4">
 <meta property="og:title" content="Riot Font">
 <meta property="og:description" content="A free, hand-drawn fan font in three styles. Designed by a fan for other fans.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cartoonsforsquares.github.io/riot-paramore/">
+<meta property="og:image" content="https://cartoonsforsquares.github.io/riot-paramore/kit/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="RIOT! written in the orange Marker style on yellow notebook paper with doodled stars">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="kit/favicon.png">
+<link rel="apple-touch-icon" href="kit/apple-touch-icon.png">
 </head>
 <body>
 <title>Riot Font</title>
@@ -19,7 +28,7 @@
    One paper look, so no dark variant. */
 :root {
   color-scheme: light;
-  --paper: #f3dccb;   /* under the orange-tinted notebook paper */
+  --paper: #f1e7c4;   /* under the yellow-tinted notebook paper */
   --ink: #141212;
   --ink-soft: #4e4947;
   --orange: #f6873a;
@@ -54,9 +63,11 @@ button:focus-visible, textarea:focus-visible, input:focus-visible, a:focus-visib
 .small { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); }
 
 /* ---------- hero: RIOT! in orange at the very top, then the one-line description ---------- */
-.hero { display: grid; justify-items: center; text-align: center; gap: calc(var(--u) * 18); }
-.hero h1 { margin: calc(var(--u) * 40) 0 0; color: var(--hero-orange); font: 400 calc(var(--u) * 236)/1 'Riot Marker'; letter-spacing: .05em; white-space: nowrap;
-  width: max-content; position: relative; left: 50%; transform: translateX(-50%); justify-self: start; }   /* centred even when wider than the column */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; gap: calc(var(--u) * 18); }
+/* The title can be wider than the column, so it's centred on the page by hand; the left padding
+   balances the letter spacing that trails the "!", and --nudge (set by the script) centres the ink itself. */
+.hero h1 { margin: calc(var(--u) * 40) 0 0; color: var(--hero-orange); font: 400 calc(var(--u) * 200)/1 'Riot Marker'; letter-spacing: .05em; padding-left: .05em;
+  white-space: nowrap; width: max-content; position: relative; left: 50%; transform: translateX(calc(-50% + var(--nudge, 0px))); justify-self: start; }
 /* the first headline sits close under the title */
 .hero + section { margin-top: calc(var(--gap) * -1 + var(--u) * 70); }
 
@@ -70,7 +81,7 @@ section:nth-of-type(odd) .strip { --tilt: -1.2deg; }
 section:nth-of-type(even) .strip { --tilt: 1deg; }
 .body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
 /* text blocks: a scrap of plain crumpled white paper, slightly crooked */
-.note { position: relative; padding: max(24px, calc(var(--u) * 40)) max(22px, calc(var(--u) * 44)); background: #fbfaf8 url(kit/note-paper.webp) center / cover;
+.note { position: relative; text-align: center; padding: max(24px, calc(var(--u) * 40)) max(22px, calc(var(--u) * 44)); background: #fbfaf8 url(kit/note-paper.webp) center / cover;
   box-shadow: 0 1px 1px rgba(30, 20, 10, .08), 0 calc(var(--u) * 12) calc(var(--u) * 26) calc(var(--u) * -8) rgba(30, 20, 10, .28);
   transform: rotate(var(--tilt-note, .5deg)); }
 section:nth-of-type(even) .note { --tilt-note: -.5deg; }
@@ -94,12 +105,12 @@ section:nth-of-type(even) .note { --tilt-note: -.5deg; }
 /* ---------- type test ---------- */
 .preview { min-height: calc(var(--u) * 200); display: grid; align-items: center; overflow-wrap: break-word; white-space: pre-wrap; text-align: center;
   font: 400 var(--size, 80px)/1.2 var(--riot); }
-.write { display: grid; gap: 4px; }
+.write { display: grid; gap: 4px; justify-items: center; }
+.write textarea { text-align: center; }
 textarea { width: 100%; font: 500 16px/1.5 var(--body); color: var(--ink); background: rgba(255, 255, 255, .85); border: 1px solid var(--line); border-radius: 4px;
   padding: 8px 10px; resize: vertical; min-height: 44px; }
-.size { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.size { display: flex; gap: 12px; align-items: center; justify-content: center; flex-wrap: wrap; }
 input[type=range] { flex: 1; min-width: 140px; max-width: 240px; accent-color: var(--ink); }
-.size .pill { margin-left: auto; }
 #pngStatus:empty { display: none; }
 
 /* ---------- make a post card: a 6x4 card drawn on two canvases that flip ---------- */
@@ -115,8 +126,9 @@ input[type=range] { flex: 1; min-width: 140px; max-width: 240px; accent-color: v
 #pcFront.has-photo, #pcBack { cursor: grab; }
 #pcFront.has-photo:active, #pcBack:active { cursor: grabbing; }
 .pc-controls { display: grid; gap: 14px; }
-.pc-group { display: grid; gap: 8px; }
-.pc-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.pc-group { display: grid; gap: 8px; justify-items: center; }
+.pc-group > input, .pc-group > textarea { text-align: center; }
+.pc-row { display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; }
 .pc-row input[type=range] { max-width: 200px; }
 .pc-controls input[type=text] { width: 100%; font: 500 16px/1.5 var(--body); color: var(--ink); background: rgba(255, 255, 255, .85); border: 1px solid var(--line);
   border-radius: 4px; padding: 8px 10px; }
@@ -126,7 +138,10 @@ input[type=range] { flex: 1; min-width: 140px; max-width: 240px; accent-color: v
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .pc-save { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
 #pcStatus:empty { display: none; }
-.pc-stickers { display: flex; gap: 10px; flex-wrap: wrap; }
+.swatch { width: 30px; height: 30px; border-radius: 50%; background: var(--c); border: 1px solid rgba(20, 18, 18, .35); cursor: pointer; position: relative; }
+.swatch[aria-pressed=true] { outline: 2px solid var(--ink); outline-offset: 3px; }
+.swatch::after { content: ''; position: absolute; inset: -6px; }
+.pc-stickers { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
 .pc-stickers button { width: 64px; height: 64px; padding: 8px; background: rgba(255, 255, 255, .7); border: 1px solid var(--line); border-radius: 6px; cursor: pointer; }
 .pc-stickers button:hover { background: #fff; transform: rotate(-6deg); }
 .pc-stickers img { width: 100%; height: 100%; object-fit: contain; display: block; }
@@ -135,7 +150,7 @@ input[type=range] { flex: 1; min-width: 140px; max-width: 240px; accent-color: v
 
 /* ---------- install: three little white tags ---------- */
 .tags { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-.tag { background: #fff; border: 1px solid var(--line); padding: 12px 12px 14px; display: grid; gap: 4px; align-content: start; font-size: 13px; transform: rotate(var(--r)); }
+.tag { background: #fff; border: 1px solid var(--line); padding: 12px 12px 14px; display: grid; gap: 4px; align-content: start; justify-items: center; font-size: 13px; transform: rotate(var(--r)); }
 .tag:nth-child(1) { --r: -1.5deg; } .tag:nth-child(2) { --r: 1deg; } .tag:nth-child(3) { --r: -.5deg; }
 .fine { font-size: 12.5px; color: var(--ink-soft); }
 
@@ -147,6 +162,8 @@ input[type=range] { flex: 1; min-width: 140px; max-width: 240px; accent-color: v
 .get button:active .strip { transform: rotate(-3deg) translateY(1px) scale(.98); }
 #status { min-height: 1.3em; }
 footer { text-align: center; }
+.more { display: grid; justify-items: center; gap: 10px; margin-top: calc(var(--gap) * -.5); }
+a.pill { text-decoration: none; display: inline-flex; align-items: center; }
 
 @media (max-width: 760px) {
   :root { --u: calc(100vw / 720); --text: 14.5px; --gap: 96px; }
@@ -154,7 +171,7 @@ footer { text-align: center; }
   .chars { grid-template-columns: repeat(7, 1fr); }
   .chars span { font-size: 30px; }
   .sample { font-size: 11vw; }
-  .size .pill { margin-left: 0; width: 100%; }
+  .size .pill { width: 100%; }
   input[type=range] { max-width: none; }
   .tags { grid-template-columns: 1fr; }
   .tag { --r: 0deg !important; }
@@ -224,6 +241,20 @@ footer { text-align: center; }
           </div>
           <div class="pc-row"><label class="small" for="pcZoom">Zoom</label><input id="pcZoom" type="range" min="100" max="300" value="100"></div>
           <p class="fine">Drag the photo to move it.</p>
+          <label class="small" for="pcCap">Caption on the front</label>
+          <input id="pcCap" type="text" maxlength="28" spellcheck="false" placeholder="e.g. Front row!">
+          <div class="pc-row" role="group" aria-label="Caption style">
+            <button class="pill" type="button" data-cap-style="Marker" aria-pressed="true">Marker</button>
+            <button class="pill" type="button" data-cap-style="Scrawl" aria-pressed="false">Scrawl</button>
+            <button class="pill" type="button" data-cap-style="Scribble" aria-pressed="false">Scribble</button>
+          </div>
+          <div class="pc-row" role="group" aria-label="Caption colour">
+            <button class="swatch" type="button" data-cap-color="#ffffff" aria-label="White" aria-pressed="true" style="--c: #ffffff"></button>
+            <button class="swatch" type="button" data-cap-color="#141212" aria-label="Black" aria-pressed="false" style="--c: #141212"></button>
+            <button class="swatch" type="button" data-cap-color="#ef6420" aria-label="Orange" aria-pressed="false" style="--c: #ef6420"></button>
+            <button class="swatch" type="button" data-cap-color="#f6c12e" aria-label="Yellow" aria-pressed="false" style="--c: #f6c12e"></button>
+          </div>
+          <p class="fine">The caption moves, resizes and turns like a sticker.</p>
         </div>
         <div class="pc-group">
           <span class="small">Stickers</span>
@@ -256,6 +287,7 @@ Franklin, TN</textarea>
         <div class="pc-save">
           <button class="pill" type="button" id="pcSaveFront">Download front</button>
           <button class="pill" type="button" id="pcSaveBack">Download back</button>
+          <button class="pill" type="button" id="pcSaveInsta">Download for Instagram</button>
         </div>
         <p class="fine" id="pcStatus" role="status"></p>
       </div>
@@ -286,6 +318,11 @@ Franklin, TN</textarea>
     <button type="button" data-download aria-label="Download the Riot font"><span class="strip"><img src="kit/h-download-font.webp" alt=""></span></button>
     <div id="status" class="small" role="status"></div>
   </div>
+
+  <aside class="more" aria-label="More fan fonts">
+    <span class="small">More fan fonts</span>
+    <a class="pill" href="https://cartoonsforsquares.github.io/ms-williams/" target="_blank" rel="noopener">Ms.Williams ↗</a>
+  </aside>
 
   <footer class="small">Designed by a fan for other fans</footer>
 </div>
@@ -478,16 +515,28 @@ function drawBack(clean) {
 }
 
 /* stickers: each is { n, x, y, s, r } in card pixels (centre, width, turn) */
-function stSize(st) { const im = STICKERS[st.n]; return [st.s, st.s * (im.naturalHeight / im.naturalWidth || 1)]; }
+const meas = document.createElement('canvas').getContext('2d');
+function stSize(st) {
+  if (st.t === 'text') { meas.font = `${st.s}px "Riot ${st.style}"`; return [Math.max(st.s, meas.measureText(st.text).width), st.s * .82]; }
+  const im = STICKERS[st.n]; return [st.s, st.s * (im.naturalHeight / im.naturalWidth || 1)];
+}
 function handleR(side) { return 18 * PC.W / $(side === 'front' ? 'pcFront' : 'pcBack').getBoundingClientRect().width; }
 function drawStickers(g, side, clean) {
   pc.stickers[side].forEach((st, i) => {
-    const im = STICKERS[st.n]; if (!im.complete || !im.naturalWidth) return;
     const [w, h] = stSize(st);
-    g.save(); g.translate(st.x, st.y); g.rotate(st.r);
-    g.shadowColor = 'rgba(30, 20, 10, .25)'; g.shadowBlur = 10; g.shadowOffsetY = 4;
-    g.drawImage(im, -w / 2, -h / 2, w, h);
-    g.restore();
+    if (st.t === 'text') {
+      g.save(); g.translate(st.x, st.y); g.rotate(st.r);
+      g.font = `${st.s}px "Riot ${st.style}"`; g.textAlign = 'center'; g.textBaseline = 'alphabetic'; g.fillStyle = st.color;
+      g.shadowColor = st.color === '#141212' ? 'rgba(255, 255, 255, .35)' : 'rgba(0, 0, 0, .35)'; g.shadowBlur = 8; g.shadowOffsetY = 3;
+      g.fillText(st.text, 0, st.s * .36);   // caps are 0.72 em tall: this centres them on the box
+      g.restore();
+    } else {
+      const im = STICKERS[st.n]; if (!im.complete || !im.naturalWidth) return;
+      g.save(); g.translate(st.x, st.y); g.rotate(st.r);
+      g.shadowColor = 'rgba(30, 20, 10, .25)'; g.shadowBlur = 10; g.shadowOffsetY = 4;
+      g.drawImage(im, -w / 2, -h / 2, w, h);
+      g.restore();
+    }
     if (clean || !pc.sel || pc.sel.side !== side || pc.sel.i !== i) return;
     const R = handleR(side);
     g.save(); g.translate(st.x, st.y); g.rotate(st.r);
@@ -556,7 +605,7 @@ let drag = null;
     drag = null;
     if (pc.sel && pc.sel.side === side) {
       const st = list[pc.sel.i], [w, h] = stSize(st), [lx, ly] = local(st, x, y);
-      if (Math.hypot(lx + w / 2, ly + h / 2) < R) { list.splice(pc.sel.i, 1); pc.sel = null; redraw(); return; }
+      if (Math.hypot(lx + w / 2, ly + h / 2) < R) { if (st.t === 'text') $('pcCap').value = ''; list.splice(pc.sel.i, 1); pc.sel = null; redraw(); return; }
       if (Math.hypot(lx - w / 2, ly - h / 2) < R) {
         drag = { mode: 'turn', st, d0: Math.hypot(x - st.x, y - st.y), a0: Math.atan2(y - st.y, x - st.x), s0: st.s, r0: st.r };
       }
@@ -582,7 +631,7 @@ let drag = null;
     if (drag.mode === 'move') { drag.st.x = drag.sx + x - drag.x; drag.st.y = drag.sy + y - drag.y; redraw(); }
     else if (drag.mode === 'turn') {
       const st = drag.st;
-      st.s = Math.max(80, Math.min(1400, drag.s0 * Math.hypot(x - st.x, y - st.y) / drag.d0));
+      st.s = Math.max(st.t === 'text' ? 40 : 80, Math.min(1400, drag.s0 * Math.hypot(x - st.x, y - st.y) / drag.d0));
       st.r = drag.r0 + Math.atan2(y - st.y, x - st.x) - drag.a0; redraw();
     } else if (drag.mode === 'pan') {
       pc.px = drag.px + (e.clientX - drag.x) * drag.k; pc.py = drag.py + (e.clientY - drag.y) * drag.k; drawFront();
@@ -620,7 +669,71 @@ async function saveSide(side) {
 $('pcSaveFront').onclick = () => saveSide('front');
 $('pcSaveBack').onclick = () => saveSide('back');
 
+/* caption: one text element on the front, set in Riot */
+const cap = { style: 'Marker', color: '#ffffff' };
+function caption() { return pc.stickers.front.find(st => st.t === 'text'); }
+function syncCaption() {
+  const text = $('pcCap').value.trim(), list = pc.stickers.front;
+  let st = caption();
+  if (!text) { if (st) { list.splice(list.indexOf(st), 1); pc.sel = null; } redraw(); return; }
+  if (!st) { st = { t: 'text', x: PC.W / 2, y: PC.H * .8, s: 150, r: -.04 }; list.push(st); }
+  Object.assign(st, { text, style: cap.style, color: cap.color });
+  setSide('front'); pc.sel = { side: 'front', i: list.indexOf(st) }; redraw();
+}
+$('pcCap').addEventListener('input', syncCaption);
+$('pcCap').addEventListener('focus', () => setSide('front'));
+document.querySelectorAll('[data-cap-style]').forEach(b => b.onclick = () => {
+  cap.style = b.dataset.capStyle;
+  document.querySelectorAll('[data-cap-style]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); syncCaption();
+});
+document.querySelectorAll('[data-cap-color]').forEach(b => b.onclick = () => {
+  cap.color = b.dataset.capColor;
+  document.querySelectorAll('[data-cap-color]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); syncCaption();
+});
+
+/* Instagram: both sides on one 1080 × 1350 post, front above back, on the notebook paper */
+const sheet = new Image(); sheet.src = 'kit/paper-top.webp';
+$('pcSaveInsta').onclick = async () => {
+  const say = t => { $('pcStatus').textContent = t; };
+  const c = document.createElement('canvas'); c.width = 1080; c.height = 1350;
+  const g = c.getContext('2d');
+  if (!sheet.complete) await new Promise(r => { sheet.onload = sheet.onerror = r; });
+  if (sheet.naturalWidth) { const k = Math.max(1080 / sheet.naturalWidth, 1350 / sheet.naturalHeight); g.drawImage(sheet, 0, 0, sheet.naturalWidth * k, sheet.naturalHeight * k); }
+  else { g.fillStyle = '#f1e7c4'; g.fillRect(0, 0, 1080, 1350); }
+  drawFront(true); drawBack(true);
+  const W = 900, H = 600;
+  [['pcFront', 355, -.03], ['pcBack', 1000, .025]].forEach(([id, cy, r]) => {
+    g.save(); g.translate(540, cy); g.rotate(r);
+    g.shadowColor = 'rgba(30, 20, 10, .35)'; g.shadowBlur = 28; g.shadowOffsetY = 12;
+    g.drawImage($(id), -W / 2, -H / 2, W, H); g.restore();
+  });
+  redraw();
+  const blob = await new Promise(r => c.toBlob(r, 'image/png'));
+  const name = 'riot-postcard-instagram.png', file = new File([blob], name, { type: 'image/png' });
+  if (matchMedia('(pointer: coarse)').matches && navigator.canShare && navigator.canShare({ files: [file] })) {
+    try { await navigator.share({ files: [file] }); return; }
+    catch (err) { if (err && err.name === 'AbortError') return; }
+  }
+  await saveBlob(name, blob, 'image/png', say);
+};
+
 STICKERS.forEach(im => im.onload = redraw);
+
+/* centre the title by its ink, not its box (the "!" is thin, so the box centre looks off) */
+function centerTitle() {
+  const h = document.querySelector('.hero h1'), cs = getComputedStyle(h), ls = parseFloat(cs.letterSpacing) || 0, pad = parseFloat(cs.paddingLeft) || 0;
+  meas.font = cs.font; const chars = [...h.textContent];
+  let x = pad, inkL = null, inkR = 0;
+  chars.forEach((ch, i) => {
+    const m = meas.measureText(ch);
+    if (i === 0) inkL = x - m.actualBoundingBoxLeft;
+    if (i === chars.length - 1) inkR = x + m.actualBoundingBoxRight;
+    x += m.width + ls;
+  });
+  h.style.setProperty('--nudge', ((h.offsetWidth / 2) - (inkL + inkR) / 2).toFixed(1) + 'px');
+}
+document.fonts.load(`40px "Riot Marker"`, 'R').then(centerTitle);
+addEventListener('resize', centerTitle);
 drawFront(); drawBack();
 Promise.all(['120px "Riot Marker"', '120px "Riot Scrawl"', '120px "Riot Scribble"', '40px "Beth Ellen"', '500 36px Geist']
   .map(f => document.fonts.load(f, 'A'))).then(() => { drawFront(); drawBack(); });
