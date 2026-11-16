@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f1f0ee">
+<meta property="og:title" content="Riot Font">
+<meta property="og:description" content="A free, hand-drawn fan font in three styles. Designed by a fan for other fans.">
+</head>
+<body>
+<title>Riot Font</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Riot: a free, hand-drawn fan font in three styles. Type, test and download it.">
+<style>
+/* Built to the mock: one crumpled sheet of notebook paper, full width. Everything is sized in
+   --u, one pixel of the 1440px-wide mock, so the page keeps the mock's proportions at any width.
+   The Riot font is only for display (RIOT, the character set, the type test). Body copy is Geist,
+   written on scraps of plain white paper. Kraft strips are only ever behind the bead titles.
+   One paper look, so no dark variant. */
+:root {
+  color-scheme: light;
+  --paper: #f3dccb;   /* under the orange-tinted notebook paper */
+  --ink: #141212;
+  --ink-soft: #4e4947;
+  --orange: #f6873a;
+  --hero-orange: #ef6420;
+  --line: rgba(20, 18, 18, .14);
+  --body: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --u: calc(min(100vw, 1600px) / 1440);
+  --text: max(14.5px, calc(var(--u) * 16));
+  --col: calc(var(--u) * 640);          /* content column, about the width of the cover card */
+  --gap: calc(var(--u) * 150);          /* between sections, always */
+  --bead: calc(var(--u) * 66);          /* bead headline height (mock: Character sheet beads ≈ 560px wide) */
+  --riot: 'Riot Marker';
+}
+@font-face { font-family: 'Riot Marker'; src: url(fonts/Riot-Marker.woff2) format('woff2'); font-display: block; }
+@font-face { font-family: 'Riot Scrawl'; src: url(fonts/Riot-Scrawl.woff2) format('woff2'); font-display: block; }
+@font-face { font-family: 'Riot Scribble'; src: url(fonts/Riot-Scribble.woff2) format('woff2'); font-display: block; }
+@font-face { font-family: 'Geist'; src: url(fonts/Geist-Medium.woff2) format('woff2'); font-weight: 500; font-display: swap; }
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; overflow-x: clip; }
+/* the full sheet (holes, unlined top) first; below it, the lined part mirrored so the repeat has no seam */
+body { --pw: max(100vw, 900px);
+  background: url(kit/paper-top.webp) left top / var(--pw) auto no-repeat,
+              url(kit/paper.webp) left 0 top calc(var(--pw) * 1.29875) / var(--pw) auto repeat-y, var(--paper); color: var(--ink);
+  font: 500 var(--text)/1.65 var(--body); -webkit-font-smoothing: antialiased; }
+.page { width: min(100% - 40px, var(--col)); margin: 0 auto; padding-block: max(calc(var(--u) * 70), env(safe-area-inset-top, 0px)) calc(var(--u) * 140);
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap); }
+p { margin: 0; }
+button { font: inherit; color: inherit; }
+button:focus-visible, textarea:focus-visible, input:focus-visible, a:focus-visible { outline: 2px dashed var(--ink); outline-offset: 4px; }
+.small { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); }
+
+/* ---------- hero: RIOT! in orange at the very top, then the one-line description ---------- */
+.hero { display: grid; justify-items: center; text-align: center; gap: calc(var(--u) * 18); }
+.hero h1 { margin: calc(var(--u) * 40) 0 0; color: var(--hero-orange); font: 400 calc(var(--u) * 236)/1 'Riot Marker'; letter-spacing: .05em; white-space: nowrap;
+  width: max-content; position: relative; left: 50%; transform: translateX(-50%); justify-self: start; }   /* centred even when wider than the column */
+/* the first headline sits close under the title */
+.hero + section { margin-top: calc(var(--gap) * -1 + var(--u) * 70); }
+
+/* ---------- headline: beads on a torn kraft strip ---------- */
+section { display: grid; grid-template-columns: minmax(0, 1fr); gap: calc(var(--u) * 40); }
+.strip { justify-self: center; display: grid; place-items: center; margin: 0; line-height: 0;
+  padding: calc(var(--bead) * 1.05) calc(var(--bead) * .45);
+  background: url(kit/strip.webp) center / 100% 100% no-repeat; transform: rotate(var(--tilt, 0deg)); }
+.strip img { display: block; height: var(--bead); width: auto; max-width: none; }
+section:nth-of-type(odd) .strip { --tilt: -1.2deg; }
+section:nth-of-type(even) .strip { --tilt: 1deg; }
+.body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+/* text blocks: a scrap of plain crumpled white paper, slightly crooked */
+.note { position: relative; padding: max(24px, calc(var(--u) * 40)) max(22px, calc(var(--u) * 44)); background: #fbfaf8 url(kit/note-paper.webp) center / cover;
+  box-shadow: 0 1px 1px rgba(30, 20, 10, .08), 0 calc(var(--u) * 12) calc(var(--u) * 26) calc(var(--u) * -8) rgba(30, 20, 10, .28);
+  transform: rotate(var(--tilt-note, .5deg)); }
+section:nth-of-type(even) .note { --tilt-note: -.5deg; }
+
+/* ---------- buttons: ink pills ---------- */
+.styles { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.pill { position: relative; font: 500 10.5px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--ink);
+  background: #fff; border: 1px solid var(--ink); border-radius: 999px; padding: 9px 14px; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); }
+.pill:hover { background: #ffe3cf; }
+.pill:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
+.pill[aria-pressed=true] { background: var(--ink); color: #fff; }
+.pill:disabled { opacity: .5; cursor: progress; }
+.pill::after { content: ''; position: absolute; inset: -8px -4px; }   /* bigger tap area */
+@media (pointer: coarse) { .pill { min-height: 40px; } input[type=range] { height: 32px; } }
+
+/* ---------- character sheet: written straight on the paper ---------- */
+.sample { text-align: center; white-space: nowrap; font: 400 calc(var(--u) * 76)/1.05 var(--riot); }
+.chars { display: grid; grid-template-columns: repeat(10, 1fr); row-gap: calc(var(--u) * 6); }
+.chars span { display: grid; place-items: center; aspect-ratio: 1; font: 400 calc(var(--u) * 46)/1 var(--riot); }
+
+/* ---------- type test ---------- */
+.preview { min-height: calc(var(--u) * 200); display: grid; align-items: center; overflow-wrap: break-word; white-space: pre-wrap; text-align: center;
+  font: 400 var(--size, 80px)/1.2 var(--riot); }
+.write { display: grid; gap: 4px; }
+textarea { width: 100%; font: 500 16px/1.5 var(--body); color: var(--ink); background: rgba(255, 255, 255, .85); border: 1px solid var(--line); border-radius: 4px;
+  padding: 8px 10px; resize: vertical; min-height: 44px; }
+.size { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+input[type=range] { flex: 1; min-width: 140px; max-width: 240px; accent-color: var(--ink); }
+.size .pill { margin-left: auto; }
+#pngStatus:empty { display: none; }
+
+/* ---------- make a post card: a 6x4 card drawn on two canvases that flip ---------- */
+@font-face { font-family: 'Beth Ellen'; src: url(fonts/BethEllen-Regular.woff2) format('woff2'); font-display: block; }
+.pc-sides { display: flex; gap: 8px; justify-content: center; }
+.pc-stage { perspective: 1800px; }
+.pc-card { position: relative; aspect-ratio: 3 / 2; transform-style: preserve-3d; transition: transform .7s cubic-bezier(.3, .7, .3, 1); transform: rotate(-1deg); }
+.pc-card.flipped { transform: rotate(1deg) rotateY(180deg); }
+.pc-card canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  box-shadow: 0 1px 2px rgba(30, 20, 10, .15), 0 12px 24px -10px rgba(30, 20, 10, .45); }
+#pcBack { transform: rotateY(180deg); }
+#pcFront { cursor: pointer; }
+#pcFront.has-photo, #pcBack { cursor: grab; }
+#pcFront.has-photo:active, #pcBack:active { cursor: grabbing; }
+.pc-controls { display: grid; gap: 14px; }
+.pc-group { display: grid; gap: 8px; }
+.pc-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.pc-row input[type=range] { max-width: 200px; }
+.pc-controls input[type=text] { width: 100%; font: 500 16px/1.5 var(--body); color: var(--ink); background: rgba(255, 255, 255, .85); border: 1px solid var(--line);
+  border-radius: 4px; padding: 8px 10px; }
+.pc-controls textarea { min-height: 88px; }
+.check { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; cursor: pointer; }
+.check input { accent-color: var(--ink); width: 16px; height: 16px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.pc-save { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+#pcStatus:empty { display: none; }
+.pc-stickers { display: flex; gap: 10px; flex-wrap: wrap; }
+.pc-stickers button { width: 64px; height: 64px; padding: 8px; background: rgba(255, 255, 255, .7); border: 1px solid var(--line); border-radius: 6px; cursor: pointer; }
+.pc-stickers button:hover { background: #fff; transform: rotate(-6deg); }
+.pc-stickers img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.pc-card canvas.has-photo, #pcBack { touch-action: none; }
+@media (prefers-reduced-motion: reduce) { .pc-card { transition: none; } }
+
+/* ---------- install: three little white tags ---------- */
+.tags { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.tag { background: #fff; border: 1px solid var(--line); padding: 12px 12px 14px; display: grid; gap: 4px; align-content: start; font-size: 13px; transform: rotate(var(--r)); }
+.tag:nth-child(1) { --r: -1.5deg; } .tag:nth-child(2) { --r: 1deg; } .tag:nth-child(3) { --r: -.5deg; }
+.fine { font-size: 12.5px; color: var(--ink-soft); }
+
+/* ---------- download ---------- */
+.get { display: grid; justify-items: center; gap: 10px; }
+.get button { border: 0; background: none; padding: 0; cursor: pointer; }
+.get button .strip { --tilt: -1.5deg; transition: transform .15s; }
+.get button:hover .strip { --tilt: -3deg; }
+.get button:active .strip { transform: rotate(-3deg) translateY(1px) scale(.98); }
+#status { min-height: 1.3em; }
+footer { text-align: center; }
+
+@media (max-width: 760px) {
+  :root { --u: calc(100vw / 720); --text: 14.5px; --gap: 96px; }
+  .hero h1 { font-size: 18vw; }
+  .chars { grid-template-columns: repeat(7, 1fr); }
+  .chars span { font-size: 30px; }
+  .sample { font-size: 11vw; }
+  .size .pill { margin-left: 0; width: 100%; }
+  input[type=range] { max-width: none; }
+  .tags { grid-template-columns: 1fr; }
+  .tag { --r: 0deg !important; }
+}
+@media (prefers-reduced-motion: reduce) { .get button:hover .strip { transform: none; } }
+</style>
+
+<div class="page">
+  <header class="hero">
+    <h1>Riot!</h1>
+    <p>Designed by a fan for other fans.</p>
+  </header>
+
+  <section aria-label="Character sheet">
+    <h2 class="strip"><img src="kit/h-character-sheet.webp" alt="Character sheet"></h2>
+    <div class="body note">
+      <p>A free, hand-drawn fan font in three styles: Marker, Scrawl and Scribble.</p>
+      <p>Each one has capital letters, numbers and basic punctuation. Lowercase keys type the capitals too, so caps lock doesn't matter.</p>
+      <div class="styles" role="group" aria-label="Style">
+        <button class="pill" type="button" data-style="Marker" aria-pressed="true">Marker</button>
+        <button class="pill" type="button" data-style="Scrawl" aria-pressed="false">Scrawl</button>
+        <button class="pill" type="button" data-style="Scribble" aria-pressed="false">Scribble</button>
+      </div>
+      <div class="sample" aria-hidden="true">Aa Bb 123</div>
+      <div class="chars" id="chars" aria-label="Every character in the font"></div>
+    </div>
+  </section>
+
+  <section aria-label="Type test">
+    <h2 class="strip"><img src="kit/h-type-test.webp" alt="Type test"></h2>
+    <div class="body note">
+      <p>Use this area to test this typeface. You can also download a png of the words you type here.</p>
+      <div class="styles" role="group" aria-label="Style">
+        <button class="pill" type="button" data-style="Marker" aria-pressed="true">Marker</button>
+        <button class="pill" type="button" data-style="Scrawl" aria-pressed="false">Scrawl</button>
+        <button class="pill" type="button" data-style="Scribble" aria-pressed="false">Scribble</button>
+      </div>
+      <div class="preview" id="preview" aria-live="polite"></div>
+      <label class="write"><span class="small">Type here</span><textarea id="txt" rows="1" spellcheck="false">misery business!</textarea></label>
+      <div class="size"><label class="small" for="size">Size</label><input id="size" type="range" min="24" max="140" value="60"><button class="pill" type="button" id="png">Download PNG</button></div>
+      <p class="fine" id="pngStatus" role="status"></p>
+    </div>
+  </section>
+
+  <section aria-label="Make a post card">
+    <h2 class="strip"><img src="kit/h-make-a-post-card.webp" alt="Make a post card"></h2>
+    <div class="body note">
+      <p>Turn your concert photos into a post card. Add a photo for the front, then flip it over to write the back. Both sides save as 6×4 inch, print-ready PNGs.</p>
+      <div class="pc-sides" role="group" aria-label="Side">
+        <button class="pill" type="button" data-side="front" aria-pressed="true">Front</button>
+        <button class="pill" type="button" data-side="back" aria-pressed="false">Back</button>
+      </div>
+      <div class="pc-stage">
+        <div class="pc-card" id="pcCard">
+          <canvas id="pcFront" width="1800" height="1200" role="img" aria-label="Front of the post card"></canvas>
+          <canvas id="pcBack" width="1800" height="1200" role="img" aria-label="Back of the post card"></canvas>
+        </div>
+      </div>
+      <div class="pc-controls">
+        <div class="pc-group" data-for="front">
+          <span class="small">Front</span>
+          <div class="pc-row">
+            <label class="pill" for="pcFile">Upload photo</label>
+            <input class="visually-hidden" id="pcFile" type="file" accept="image/*">
+            <label class="check"><input type="checkbox" id="pcBw" checked> Black &amp; white</label>
+            <label class="check"><input type="checkbox" id="pcNoise"> Noise</label>
+          </div>
+          <div class="pc-row"><label class="small" for="pcZoom">Zoom</label><input id="pcZoom" type="range" min="100" max="300" value="100"></div>
+          <p class="fine">Drag the photo to move it.</p>
+        </div>
+        <div class="pc-group">
+          <span class="small">Stickers</span>
+          <div class="pc-stickers" role="group" aria-label="Add a sticker">
+            <button type="button" data-sticker="0" aria-label="Add the blue star"><img src="kit/st-star-1.webp" alt=""></button>
+            <button type="button" data-sticker="1" aria-label="Add the yellow outline star"><img src="kit/st-star-2.webp" alt=""></button>
+            <button type="button" data-sticker="2" aria-label="Add the yellow burst"><img src="kit/st-star-3.webp" alt=""></button>
+            <button type="button" data-sticker="3" aria-label="Add the light blue burst"><img src="kit/st-star-4.webp" alt=""></button>
+          </div>
+          <p class="fine">Tap a star to stick it on the side you're looking at. Drag it to move, pull the pink corner to resize or turn it, tap × to remove it.</p>
+        </div>
+        <div class="pc-group" data-for="back">
+          <label class="small" for="pcHead">Headline</label>
+          <input id="pcHead" type="text" value="Riot!" maxlength="24" spellcheck="false">
+          <div class="pc-row" role="group" aria-label="Headline style">
+            <button class="pill" type="button" data-pc-style="Marker" aria-pressed="true">Marker</button>
+            <button class="pill" type="button" data-pc-style="Scrawl" aria-pressed="false">Scrawl</button>
+            <button class="pill" type="button" data-pc-style="Scribble" aria-pressed="false">Scribble</button>
+          </div>
+          <label class="small" for="pcMsg">Message</label>
+          <textarea id="pcMsg" rows="4">Best night ever! I screamed every word and I can't hear a thing. Wish you were here &lt;3
+
+love,
+me</textarea>
+          <label class="small" for="pcTo">To</label>
+          <textarea id="pcTo" rows="3">My best friend
+The front row
+Franklin, TN</textarea>
+        </div>
+        <div class="pc-save">
+          <button class="pill" type="button" id="pcSaveFront">Download front</button>
+          <button class="pill" type="button" id="pcSaveBack">Download back</button>
+        </div>
+        <p class="fine" id="pcStatus" role="status"></p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="How to install">
+    <h2 class="strip"><img src="kit/h-how-to-install.webp" alt="How to install"></h2>
+    <div class="body note">
+      <div class="tags">
+        <div class="tag"><span class="small">Mac</span>Double-click each .otf file, then click Install Font.</div>
+        <div class="tag"><span class="small">Windows</span>Right-click each .otf file and choose Install.</div>
+        <div class="tag"><span class="small">Procreate</span>Actions › Add › Add Text, then Edit Style › Import Font.</div>
+      </div>
+      <p class="fine">All three styles show up under one name, “Riot”. Pick Marker, Scrawl or Scribble from the style menu. The letters are one colour, so you can make them any colour you like.</p>
+    </div>
+  </section>
+
+  <section aria-label="License">
+    <h2 class="strip"><img src="kit/h-license.webp" alt="License"></h2>
+    <div class="body note">
+      <p>Riot is free for personal use. You can use it for all forms of fan art, posters, stickers, scrapbooks, posts, and gifts etc. Hopefully none include any commercial projects *wink* *wink*.</p>
+      <p>This is a fan made project. I am not affiliated with the band or their label, and I do not get paid for this. I simply made it for the love of the game.</p>
+    </div>
+  </section>
+
+  <div class="get">
+    <button type="button" data-download aria-label="Download the Riot font"><span class="strip"><img src="kit/h-download-font.webp" alt=""></span></button>
+    <div id="status" class="small" role="status"></div>
+  </div>
+
+  <footer class="small">Designed by a fan for other fans</footer>
+</div>
+
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const status = t => { $('status').textContent = t; };
+let style = 'Marker';
+// load all three styles up front so switching never shows a blank gap
+['Marker', 'Scrawl', 'Scribble'].forEach(s => document.fonts.load(`40px "Riot ${s}"`, 'A'));
+
+/* ---------- character sheet ---------- */
+const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!?.,:;\'"-&()/@';
+for (const c of CHARS) { const s = document.createElement('span'); s.textContent = c; $('chars').appendChild(s); }
+
+/* ---------- style switch (both switches stay in step) ---------- */
+function setStyle(s) {
+  style = s;
+  document.documentElement.style.setProperty('--riot', `'Riot ${s}'`);
+  document.querySelectorAll('[data-style]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.style === s)));
+}
+document.querySelectorAll('[data-style]').forEach(b => b.onclick = () => setStyle(b.dataset.style));
+
+/* ---------- type test ---------- */
+function render() {
+  const p = $('preview');
+  p.textContent = $('txt').value || ' ';
+  p.style.setProperty('--size', $('size').value + 'px');
+}
+$('txt').addEventListener('input', render);
+$('size').addEventListener('input', render);
+if (window.innerWidth < 760) $('size').value = 40;
+render();
+
+/* ---------- PNG of the type test: transparent, trimmed to the ink ---------- */
+async function makePng() {
+  const FONT = `200px "Riot ${style}"`, MAXW = 2000, LH = 260, PAD = 60;
+  await document.fonts.load(FONT, $('txt').value || 'A');
+  const m = document.createElement('canvas').getContext('2d'); m.font = FONT;
+  const lines = [];
+  for (const para of ($('txt').value.trim() || 'Riot').split('\n')) {
+    let line = '';
+    for (const word of para.split(/ +/)) {
+      const t = line ? line + ' ' + word : word;
+      if (line && m.measureText(t).width > MAXW) { lines.push(line); line = word; } else line = t;
+    }
+    lines.push(line);
+  }
+  const w = Math.ceil(Math.max(...lines.map(l => m.measureText(l).width))) + PAD * 2;
+  const c = document.createElement('canvas'); c.width = w; c.height = lines.length * LH + PAD * 2;
+  const g = c.getContext('2d'); g.font = FONT; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#141212';
+  lines.forEach((l, i) => g.fillText(l, w / 2, PAD + LH * (i + .5)));
+  const d = g.getImageData(0, 0, c.width, c.height).data;
+  let x0 = c.width, y0 = c.height, x1 = -1, y1 = -1;
+  for (let y = 0; y < c.height; y++) for (let x = 0; x < c.width; x++) if (d[(y * c.width + x) * 4 + 3] > 8) {
+    if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+  }
+  if (x1 < 0) return null;
+  const M = 24, out = document.createElement('canvas');
+  out.width = x1 - x0 + 1 + M * 2; out.height = y1 - y0 + 1 + M * 2;
+  out.getContext('2d').drawImage(c, x0, y0, x1 - x0 + 1, y1 - y0 + 1, M, M, x1 - x0 + 1, y1 - y0 + 1);
+  return new Promise(res => out.toBlob(res, 'image/png'));
+}
+$('png').onclick = async () => {
+  const b = $('png'), say = t => { $('pngStatus').textContent = t; };
+  b.disabled = true; say('');
+  try {
+    const blob = await makePng();
+    if (!blob) { say('Type something first.'); return; }
+    const name = 'riot-' + style.toLowerCase() + '-' + ($('txt').value.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 30) || 'type') + '.png';
+    const file = new File([blob], name, { type: 'image/png' });
+    if (matchMedia('(pointer: coarse)').matches && navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file] }); say(''); return; }
+      catch (err) { if (err && err.name === 'AbortError') { say(''); return; } }
+    }
+    await saveBlob(name, blob, 'image/png', say);
+  } catch { say('Couldn’t make the PNG. Try again.'); }
+  finally { b.disabled = false; }
+};
+
+/* ---------- post card ---------- */
+// Both sides are 1800 × 1200 (6 × 4 in at 300 dpi), laid out from the design frames:
+// an orange border, a black & white photo on the front, and a paper back with a RIOT headline,
+// a stamp, a divider, a handwritten message (Beth Ellen) and address lines.
+const PC = { W: 1800, H: 1200, B: 66, orange: '#f5883c', red: '#e04a2c', ink: '#27283a' };
+const pc = { img: null, gray: null, zoom: 1, px: 0, py: 0, style: 'Marker', side: 'front', stickers: { front: [], back: [] }, sel: null };
+const STICKERS = [1, 2, 3, 4].map(n => { const im = new Image(); im.src = `kit/st-star-${n}.webp`; return im; });
+// film grain, made once and laid over the photo when Noise is on
+const grain = (() => {
+  const c = document.createElement('canvas'); c.width = 600; c.height = 400;
+  const g = c.getContext('2d'), d = g.createImageData(c.width, c.height), a = d.data;
+  for (let i = 0; i < a.length; i += 4) { const v = Math.random() * 255; a[i] = a[i + 1] = a[i + 2] = v; a[i + 3] = 255; }
+  g.putImageData(d, 0, 0); return c;
+})();
+const paper = new Image(); paper.src = 'kit/postcard-paper.webp'; paper.onload = () => drawBack();
+
+function setSide(side) {
+  if (pc.side !== side && pc.sel) { pc.sel = null; redraw(); }
+  pc.side = side;
+  $('pcCard').classList.toggle('flipped', side === 'back');
+  document.querySelectorAll('[data-side]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.side === side)));
+}
+document.querySelectorAll('[data-side]').forEach(b => b.onclick = () => setSide(b.dataset.side));
+
+function frame(g) { g.fillStyle = PC.orange; g.fillRect(0, 0, PC.W, PC.H); }
+function inner() { return [PC.B, PC.B, PC.W - PC.B * 2, PC.H - PC.B * 2]; }
+
+function redraw() { drawFront(); drawBack(); }
+function drawFront(clean) {
+  const g = $('pcFront').getContext('2d'), [x, y, w, h] = inner();
+  frame(g);
+  g.save(); g.beginPath(); g.rect(x, y, w, h); g.clip();
+  if (!pc.img) {
+    g.fillStyle = '#d8d4cc'; g.fillRect(x, y, w, h);
+    g.fillStyle = '#8f8a82'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.font = '120px "Riot Marker"'; g.fillText('Add your photo', PC.W / 2, PC.H / 2 - 30);
+    g.font = '500 36px Geist, sans-serif'; g.fillText('Tap here or use Upload photo', PC.W / 2, PC.H / 2 + 80);
+  } else {
+    const src = $('pcBw').checked ? pc.gray : pc.img;
+    const s = Math.max(w / src.width, h / src.height) * pc.zoom;
+    const dw = src.width * s, dh = src.height * s;
+    // keep the photo covering the window however it's dragged
+    pc.px = Math.min(0, Math.max(w - dw, pc.px)); pc.py = Math.min(0, Math.max(h - dh, pc.py));
+    g.drawImage(src, x + pc.px, y + pc.py, dw, dh);
+    if ($('pcNoise').checked) {
+      g.globalCompositeOperation = 'overlay'; g.globalAlpha = .38;
+      g.drawImage(grain, x, y, w, h);
+      g.globalCompositeOperation = 'source-over'; g.globalAlpha = 1;
+    }
+  }
+  g.restore();
+  drawStickers(g, 'front', clean);
+}
+
+function stamp(g, x, y, w, h) {
+  const r = 11, step = 30, c = document.createElement('canvas'); c.width = w; c.height = h;
+  const s = c.getContext('2d'); s.fillStyle = '#8e8d89'; s.fillRect(0, 0, w, h);
+  s.globalCompositeOperation = 'destination-out';
+  for (let i = step / 2; i < w; i += step) { s.beginPath(); s.arc(i, 0, r, 0, 7); s.arc(i, h, r, 0, 7); s.fill(); }
+  for (let j = step / 2; j < h; j += step) { s.beginPath(); s.arc(0, j, r, 0, 7); s.arc(w, j, r, 0, 7); s.fill(); }
+  g.drawImage(c, x, y);
+}
+
+function wrap(g, text, maxW) {
+  const out = [];
+  for (const para of text.split('\n')) {
+    let line = '';
+    for (const word of para.split(/ +/)) {
+      const t = line ? line + ' ' + word : word;
+      if (line && g.measureText(t).width > maxW) { out.push(line); line = word; } else line = t;
+    }
+    out.push(line);
+  }
+  return out;
+}
+
+function drawBack(clean) {
+  const g = $('pcBack').getContext('2d'), [x, y, w, h] = inner(), W = PC.W, H = PC.H;
+  frame(g);
+  if (paper.complete && paper.naturalWidth) g.drawImage(paper, x, y, w, h); else { g.fillStyle = '#efe9da'; g.fillRect(x, y, w, h); }
+  // headline
+  const head = $('pcHead').value.trim();
+  if (head) {
+    let size = 140; g.font = `${size}px "Riot ${pc.style}"`;
+    const room = W * .62; const tw = g.measureText(head).width; if (tw > room) { size *= room / tw; g.font = `${size}px "Riot ${pc.style}"`; }
+    g.fillStyle = PC.red; g.textAlign = 'center'; g.textBaseline = 'alphabetic'; g.fillText(head, W / 2, H * .225);
+  }
+  stamp(g, Math.round(W * .78), Math.round(H * .145), Math.round(W * .15), Math.round(H * .17));
+  // divider and address lines
+  g.strokeStyle = '#2b2a2a'; g.lineCap = 'round';
+  g.lineWidth = 3; g.beginPath(); g.moveTo(W * .502, H * .27); g.lineTo(W * .502, H * .86); g.stroke();
+  const lines = [.47, .54, .61, .68], ax0 = W * .56, ax1 = W * .93;
+  g.lineWidth = 2.5; for (const ly of lines) { g.beginPath(); g.moveTo(ax0, H * ly); g.lineTo(ax1, H * ly); g.stroke(); }
+  // handwriting
+  g.fillStyle = PC.ink; g.textAlign = 'left'; g.textBaseline = 'alphabetic';
+  g.font = '40px "Beth Ellen"';
+  $('pcTo').value.split('\n').slice(0, 4).forEach((t, i) => {
+    let size = 40; g.font = `${size}px "Beth Ellen"`;
+    const tw = g.measureText(t).width, room = ax1 - ax0 - 24; if (tw > room) g.font = `${size * room / tw}px "Beth Ellen"`;
+    g.fillText(t, ax0 + 12, H * lines[i] - 16);
+  });
+  g.save(); g.translate(W * .09, H * .33); g.rotate(-.025);
+  let size = 44, msg = wrap((g.font = `${size}px "Beth Ellen"`, g), $('pcMsg').value, W * .36);
+  while (msg.length * size * 1.75 > H * .5 && size > 22) { size -= 2; g.font = `${size}px "Beth Ellen"`; msg = wrap(g, $('pcMsg').value, W * .36); }
+  msg.forEach((t, i) => g.fillText(t, 0, i * size * 1.75));
+  g.restore();
+  drawStickers(g, 'back', clean);
+}
+
+/* stickers: each is { n, x, y, s, r } in card pixels (centre, width, turn) */
+function stSize(st) { const im = STICKERS[st.n]; return [st.s, st.s * (im.naturalHeight / im.naturalWidth || 1)]; }
+function handleR(side) { return 18 * PC.W / $(side === 'front' ? 'pcFront' : 'pcBack').getBoundingClientRect().width; }
+function drawStickers(g, side, clean) {
+  pc.stickers[side].forEach((st, i) => {
+    const im = STICKERS[st.n]; if (!im.complete || !im.naturalWidth) return;
+    const [w, h] = stSize(st);
+    g.save(); g.translate(st.x, st.y); g.rotate(st.r);
+    g.shadowColor = 'rgba(30, 20, 10, .25)'; g.shadowBlur = 10; g.shadowOffsetY = 4;
+    g.drawImage(im, -w / 2, -h / 2, w, h);
+    g.restore();
+    if (clean || !pc.sel || pc.sel.side !== side || pc.sel.i !== i) return;
+    const R = handleR(side);
+    g.save(); g.translate(st.x, st.y); g.rotate(st.r);
+    g.setLineDash([R * .6, R * .45]); g.lineWidth = R * .14; g.strokeStyle = '#141212'; g.strokeRect(-w / 2, -h / 2, w, h); g.setLineDash([]);
+    g.fillStyle = '#141212'; g.beginPath(); g.arc(-w / 2, -h / 2, R, 0, 7); g.fill();                         // × to remove
+    g.strokeStyle = '#fff'; g.lineWidth = R * .16; g.beginPath();
+    g.moveTo(-w / 2 - R * .38, -h / 2 - R * .38); g.lineTo(-w / 2 + R * .38, -h / 2 + R * .38);
+    g.moveTo(-w / 2 + R * .38, -h / 2 - R * .38); g.lineTo(-w / 2 - R * .38, -h / 2 + R * .38); g.stroke();
+    g.fillStyle = '#f49ac1'; g.strokeStyle = '#141212'; g.lineWidth = R * .14;                                // pink corner: resize / turn
+    g.beginPath(); g.arc(w / 2, h / 2, R, 0, 7); g.fill(); g.stroke();
+    g.restore();
+  });
+}
+function local(st, x, y) {   // card point -> sticker's own unrotated coordinates
+  const dx = x - st.x, dy = y - st.y, c = Math.cos(-st.r), s = Math.sin(-st.r);
+  return [dx * c - dy * s, dx * s + dy * c];
+}
+function addSticker(n) {
+  const side = pc.side, list = pc.stickers[side];
+  list.push({ n, x: PC.W * (.3 + Math.random() * .4), y: PC.H * (.3 + Math.random() * .4), s: 300, r: (Math.random() - .5) * .5 });
+  pc.sel = { side, i: list.length - 1 }; redraw();
+}
+document.querySelectorAll('[data-sticker]').forEach(b => b.onclick = () => addSticker(+b.dataset.sticker));
+
+function loadPhoto(file) {
+  if (!file) return;
+  const url = URL.createObjectURL(file), im = new Image();
+  im.onload = () => {
+    // a scaled working copy (big phone photos are slow to redraw) and its black & white twin
+    const s = Math.min(1, 2400 / Math.max(im.width, im.height));
+    const c = document.createElement('canvas'); c.width = Math.round(im.width * s); c.height = Math.round(im.height * s);
+    c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+    const gcan = document.createElement('canvas'); gcan.width = c.width; gcan.height = c.height;
+    const gg = gcan.getContext('2d'); gg.drawImage(c, 0, 0);
+    const d = gg.getImageData(0, 0, c.width, c.height), a = d.data;
+    for (let i = 0; i < a.length; i += 4) {
+      let v = .299 * a[i] + .587 * a[i + 1] + .114 * a[i + 2];
+      v = Math.max(0, Math.min(255, (v - 128) * 1.12 + 128));   // a little extra contrast, like a photocopy
+      a[i] = a[i + 1] = a[i + 2] = v;
+    }
+    gg.putImageData(d, 0, 0);
+    pc.img = c; pc.gray = gcan; pc.zoom = 1; $('pcZoom').value = 100;
+    const [, , w, h] = inner(), sc = Math.max(w / c.width, h / c.height);
+    pc.px = (w - c.width * sc) / 2; pc.py = (h - c.height * sc) / 2;
+    $('pcFront').classList.add('has-photo');
+    URL.revokeObjectURL(url); setSide('front'); drawFront();
+  };
+  im.onerror = () => { $('pcStatus').textContent = 'Couldn’t open that photo. Try a JPG or PNG.'; URL.revokeObjectURL(url); };
+  im.src = url;
+}
+$('pcFile').onchange = e => { loadPhoto(e.target.files[0]); e.target.value = ''; };
+$('pcBw').onchange = $('pcNoise').onchange = () => { setSide('front'); drawFront(); };
+$('pcZoom').oninput = () => {
+  if (!pc.img) return;
+  // zoom around the middle of the window
+  const [, , w, h] = inner(), z = $('pcZoom').value / 100, k = z / pc.zoom;
+  pc.px = w / 2 - (w / 2 - pc.px) * k; pc.py = h / 2 - (h / 2 - pc.py) * k; pc.zoom = z; setSide('front'); drawFront();
+};
+/* one pointer handler for both sides: stickers first (×, pink corner, body), then the photo */
+let drag = null;
+['front', 'back'].forEach(side => {
+  const cv = $(side === 'front' ? 'pcFront' : 'pcBack');
+  const pt = e => { const r = cv.getBoundingClientRect(), k = PC.W / r.width; return [(e.clientX - r.left) * k, (e.clientY - r.top) * k, k]; };
+  cv.addEventListener('pointerdown', e => {
+    const [x, y, k] = pt(e), list = pc.stickers[side], R = handleR(side) * 1.4;
+    drag = null;
+    if (pc.sel && pc.sel.side === side) {
+      const st = list[pc.sel.i], [w, h] = stSize(st), [lx, ly] = local(st, x, y);
+      if (Math.hypot(lx + w / 2, ly + h / 2) < R) { list.splice(pc.sel.i, 1); pc.sel = null; redraw(); return; }
+      if (Math.hypot(lx - w / 2, ly - h / 2) < R) {
+        drag = { mode: 'turn', st, d0: Math.hypot(x - st.x, y - st.y), a0: Math.atan2(y - st.y, x - st.x), s0: st.s, r0: st.r };
+      }
+    }
+    if (!drag) for (let i = list.length - 1; i >= 0; i--) {
+      const st = list[i], [w, h] = stSize(st), [lx, ly] = local(st, x, y);
+      if (Math.abs(lx) <= w / 2 && Math.abs(ly) <= h / 2) {
+        pc.sel = { side, i }; drag = { mode: 'move', st, x, y, sx: st.x, sy: st.y };
+        list.push(list.splice(i, 1)[0]); pc.sel.i = list.length - 1;   // bring to front
+        break;
+      }
+    }
+    if (!drag) {
+      pc.sel = null;
+      if (side === 'front' && pc.img) drag = { mode: 'pan', x: e.clientX, y: e.clientY, px: pc.px, py: pc.py, k };
+      else drag = { mode: 'tap', side };
+    }
+    redraw(); cv.setPointerCapture(e.pointerId);
+  });
+  cv.addEventListener('pointermove', e => {
+    if (!drag) return;
+    const [x, y] = pt(e);
+    if (drag.mode === 'move') { drag.st.x = drag.sx + x - drag.x; drag.st.y = drag.sy + y - drag.y; redraw(); }
+    else if (drag.mode === 'turn') {
+      const st = drag.st;
+      st.s = Math.max(80, Math.min(1400, drag.s0 * Math.hypot(x - st.x, y - st.y) / drag.d0));
+      st.r = drag.r0 + Math.atan2(y - st.y, x - st.x) - drag.a0; redraw();
+    } else if (drag.mode === 'pan') {
+      pc.px = drag.px + (e.clientX - drag.x) * drag.k; pc.py = drag.py + (e.clientY - drag.y) * drag.k; drawFront();
+    }
+  });
+  cv.addEventListener('pointerup', () => {
+    // tapping the empty front opens the photo picker (pointerup counts as a tap on phones)
+    if (drag && drag.mode === 'tap' && side === 'front' && !pc.img) $('pcFile').click();
+    drag = null;
+  });
+  cv.addEventListener('pointercancel', () => { drag = null; });
+});
+
+['pcHead', 'pcMsg', 'pcTo'].forEach(id => $(id).addEventListener('input', () => { setSide('back'); drawBack(); }));
+['pcHead', 'pcMsg', 'pcTo'].forEach(id => $(id).addEventListener('focus', () => setSide('back')));
+document.querySelectorAll('[data-pc-style]').forEach(b => b.onclick = () => {
+  pc.style = b.dataset.pcStyle;
+  document.querySelectorAll('[data-pc-style]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  setSide('back'); drawBack();
+});
+
+async function saveSide(side) {
+  const say = t => { $('pcStatus').textContent = t; };
+  // draw without the selection box and handles, save, then put them back
+  side === 'front' ? drawFront(true) : drawBack(true);
+  const blob = await new Promise(r => $(side === 'front' ? 'pcFront' : 'pcBack').toBlob(r, 'image/png'));
+  redraw();
+  const name = `riot-postcard-${side}.png`, file = new File([blob], name, { type: 'image/png' });
+  if (matchMedia('(pointer: coarse)').matches && navigator.canShare && navigator.canShare({ files: [file] })) {
+    try { await navigator.share({ files: [file] }); return; }
+    catch (err) { if (err && err.name === 'AbortError') return; }
+  }
+  await saveBlob(name, blob, 'image/png', say);
+}
+$('pcSaveFront').onclick = () => saveSide('front');
+$('pcSaveBack').onclick = () => saveSide('back');
+
+STICKERS.forEach(im => im.onload = redraw);
+drawFront(); drawBack();
+Promise.all(['120px "Riot Marker"', '120px "Riot Scrawl"', '120px "Riot Scribble"', '40px "Beth Ellen"', '500 36px Geist']
+  .map(f => document.fonts.load(f, 'A'))).then(() => { drawFront(); drawBack(); });
+
+/* ---------- download ---------- */
+async function saveBlob(name, blob, type, say = status) {
+  let dl = null;
+  try { dl = window.claude && window.claude.use ? await window.claude.use('downloads') : null; } catch { dl = null; }
+  if (dl) {
+    try { await dl.save({ filename: name, data: blob }); say('Saved ' + name + '.'); }
+    catch (err) { say(err && err.code === 'declined' ? 'Download cancelled.' : 'Downloads aren’t available in this view.'); }
+    return;
+  }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([blob], { type })); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  say('Downloading ' + name + '…');
+}
+async function download() {
+  try {
+    const r = await fetch('download/Riot-font.zip');
+    if (!r.ok || (r.headers.get('content-type') || '').indexOf('html') >= 0) throw 0;
+    await saveBlob('Riot-font.zip', await r.blob(), 'application/zip');
+  } catch { status('Couldn’t get the font files. Try again in a moment.'); }
+}
+document.querySelectorAll('[data-download]').forEach(b => b.onclick = download);
+})();
+</script>
+
+</body>
+</html>
