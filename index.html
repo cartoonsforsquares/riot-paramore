@@ -267,6 +267,12 @@ a.pill { text-decoration: none; display: inline-flex; align-items: center; }
           <p class="fine">Tap a star to stick it on the side you're looking at. Drag it to move, pull the pink corner to resize or turn it, tap × to remove it.</p>
         </div>
         <div class="pc-group" data-for="back">
+          <span class="small">Stamp</span>
+          <div class="pc-row">
+            <label class="pill" for="pcStampFile">Upload stamp</label>
+            <input class="visually-hidden" id="pcStampFile" type="file" accept="image/*">
+            <button class="pill" type="button" id="pcStampClear" hidden>Remove stamp</button>
+          </div>
           <label class="small" for="pcHead">Headline</label>
           <input id="pcHead" type="text" value="Riot!" maxlength="24" spellcheck="false">
           <div class="pc-row" role="group" aria-label="Headline style">
@@ -419,7 +425,8 @@ const grain = (() => {
   for (let i = 0; i < a.length; i += 4) { const v = Math.random() * 255; a[i] = a[i + 1] = a[i + 2] = v; a[i + 3] = 255; }
   g.putImageData(d, 0, 0); return c;
 })();
-const paper = new Image(); paper.src = 'kit/postcard-paper.webp'; paper.onload = () => drawBack();
+const paper = new Image(); paper.src = 'kit/postcard-paper.webp'; paper.onload = () => { buildBorderTex(); redraw(); };
+const crumple = new Image(); crumple.src = 'kit/note-paper.webp'; crumple.onload = () => buildBorderTex();
 
 function setSide(side) {
   if (pc.side !== side && pc.sel) { pc.sel = null; redraw(); }
@@ -429,7 +436,28 @@ function setSide(side) {
 }
 document.querySelectorAll('[data-side]').forEach(b => b.onclick = () => setSide(b.dataset.side));
 
-function frame(g) { g.fillStyle = PC.orange; g.fillRect(0, 0, PC.W, PC.H); }
+/* the orange border, printed on paper. The paper fibres and creases are turned into a grey texture
+   centred on mid-grey, then laid over the orange with 'overlay', so the texture shows while the
+   orange keeps its colour on average. Built once, when both papers have loaded. */
+let borderTex = null;
+function buildBorderTex() {
+  if (!(paper.naturalWidth && crumple.naturalWidth)) return;
+  const c = document.createElement('canvas'); c.width = 900; c.height = 600; const g = c.getContext('2d');
+  g.drawImage(paper, 0, 0, 900, 600);
+  g.globalCompositeOperation = 'multiply'; g.translate(450, 300); g.rotate(Math.PI / 2); g.drawImage(crumple, -300, -450, 600, 900);
+  const d = g.getImageData(0, 0, 900, 600), a = d.data; let sum = 0;
+  for (let i = 0; i < a.length; i += 4) sum += a[i] * .3 + a[i + 1] * .59 + a[i + 2] * .11;
+  const mean = sum / (a.length / 4);
+  for (let i = 0; i < a.length; i += 4) {
+    const v = Math.max(0, Math.min(255, 128 + ((a[i] * .3 + a[i + 1] * .59 + a[i + 2] * .11) - mean) * 1.6));
+    a[i] = a[i + 1] = a[i + 2] = v;
+  }
+  g.setTransform(1, 0, 0, 1, 0, 0); g.putImageData(d, 0, 0); borderTex = c; redraw();
+}
+function frame(g) {
+  g.fillStyle = PC.orange; g.fillRect(0, 0, PC.W, PC.H);
+  if (borderTex) { g.save(); g.globalCompositeOperation = 'overlay'; g.globalAlpha = .75; g.drawImage(borderTex, 0, 0, PC.W, PC.H); g.restore(); }
+}
 function inner() { return [PC.B, PC.B, PC.W - PC.B * 2, PC.H - PC.B * 2]; }
 
 function redraw() { drawFront(); drawBack(); }
@@ -459,13 +487,30 @@ function drawFront(clean) {
   drawStickers(g, 'front', clean);
 }
 
-function stamp(g, x, y, w, h) {
+/* stamp: a perforated shape. Empty it's grey; with the fan's own picture it becomes a little
+   white-edged stamp with their image inside. */
+function stampShape(w, h) {
   const r = 11, step = 30, c = document.createElement('canvas'); c.width = w; c.height = h;
-  const s = c.getContext('2d'); s.fillStyle = '#8e8d89'; s.fillRect(0, 0, w, h);
+  const s = c.getContext('2d'); s.fillStyle = '#000'; s.fillRect(0, 0, w, h);
   s.globalCompositeOperation = 'destination-out';
   for (let i = step / 2; i < w; i += step) { s.beginPath(); s.arc(i, 0, r, 0, 7); s.arc(i, h, r, 0, 7); s.fill(); }
   for (let j = step / 2; j < h; j += step) { s.beginPath(); s.arc(0, j, r, 0, 7); s.arc(w, j, r, 0, 7); s.fill(); }
-  g.drawImage(c, x, y);
+  return c;
+}
+function stamp(g, x, y, w, h) {
+  const c = stampShape(w, h), s = c.getContext('2d');
+  s.globalCompositeOperation = 'source-in';
+  if (!pc.stamp) { s.fillStyle = '#8e8d89'; s.fillRect(0, 0, w, h); }
+  else {
+    s.fillStyle = '#fbf8f0'; s.fillRect(0, 0, w, h);                     // stamp paper
+    s.globalCompositeOperation = 'source-atop';
+    const m = 22, iw = w - m * 2, ih = h - m * 2, im = pc.stamp, k = Math.max(iw / im.width, ih / im.height);
+    s.save(); s.beginPath(); s.rect(m, m, iw, ih); s.clip();
+    s.drawImage(im, m + (iw - im.width * k) / 2, m + (ih - im.height * k) / 2, im.width * k, im.height * k);
+    s.restore();
+  }
+  g.save(); g.shadowColor = 'rgba(30, 20, 10, .25)'; g.shadowBlur = 6; g.shadowOffsetY = 2;
+  g.drawImage(c, x, y); g.restore();
 }
 
 function wrap(g, text, maxW) {
@@ -588,6 +633,18 @@ function loadPhoto(file) {
   im.src = url;
 }
 $('pcFile').onchange = e => { loadPhoto(e.target.files[0]); e.target.value = ''; };
+$('pcStampFile').onchange = e => {
+  const file = e.target.files[0]; e.target.value = ''; if (!file) return;
+  const url = URL.createObjectURL(file), im = new Image();
+  im.onload = () => {
+    const k = Math.min(1, 600 / Math.max(im.width, im.height)), c = document.createElement('canvas');   // a stamp is small: keep a light copy
+    c.width = Math.round(im.width * k); c.height = Math.round(im.height * k); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+    pc.stamp = c; URL.revokeObjectURL(url); $('pcStampClear').hidden = false; setSide('back'); drawBack();
+  };
+  im.onerror = () => { $('pcStatus').textContent = 'Couldn’t open that picture. Try a JPG or PNG.'; URL.revokeObjectURL(url); };
+  im.src = url;
+};
+$('pcStampClear').onclick = () => { pc.stamp = null; $('pcStampClear').hidden = true; setSide('back'); drawBack(); };
 $('pcBw').onchange = $('pcNoise').onchange = () => { setSide('front'); drawFront(); };
 $('pcZoom').oninput = () => {
   if (!pc.img) return;
